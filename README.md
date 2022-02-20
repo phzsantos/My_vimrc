@@ -4,7 +4,7 @@
 
 #### DISCLAIMER:
 
-**This tutorial only work on linux. Windows version come soon.**
+**This tutorial works only on GNU/Linux.**
 
 ## Vim Plug:
 
@@ -21,12 +21,12 @@ Create .vimrc file on your HOME directiory:
 touch ~/.vimrc
 ```
 
-Add this lines on your .vimrc like this:  
+Add this lines to your .vimrc:  
 
 ```vim
 call plug#begin('~/.vim/plugged')
 
-" YOUR CONFIGURATIONS, PLUGINS AND EVERYTHING HAD TO BE HERE.
+" YOUR CONFIGS, PLUGINS, SETS, MAPS... HAS TO BE BETWEEN plug#begin and plug#end.
 
 call plug#end()
 ```
@@ -59,7 +59,7 @@ That doesn't gonna work if you don't put this: `stty -ixon` on your `.bashrc` an
 imap <C-s> <Esc>:w<CR>
 ```
 
-**CTRL + n** show and hide nerdtree:
+**CTRL + n** to show and hide nerdtree:
 
 ```vim
 map <C-n> :NERDTreeToggle<CR>
@@ -82,7 +82,7 @@ call plug#end()
 
 ## Sets:
 
-Showing the lines numbers:
+Show line numbers:
 
 ```vim
 set nu!
@@ -178,37 +178,37 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 ```
 
-Dracula theme for vim:
+Dracula theme:
 
 ```vim
 Plug 'dracula/vim', { 'as': 'dracula' }
 ```
 
-Syntax complete for vim:
+Syntax complete:
 
 ```vim
 Plug 'ycm-core/YouCompleteMe'
 ```
 
-Auto pairs ((),{}," "...) for vim:
+Auto pairs ((),{}," "...):
 
 ```vim
 Plug 'jiangmiao/auto-pairs'
 ```
 
-Markdown preview for vim:
+Markdown preview:
 
 ```vim
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 ```
 
-Files explorer for vim:
+Files explorer:
 
 ```vim
 Plug 'preservim/nerdtree'
 ```
 
-Language(bash, vim, python, cpp...) icons for vim:
+Language(bash, vim, python, cpp...) icons:
 
 ```vim
 Plug 'ryanoasis/vim-devicons'
