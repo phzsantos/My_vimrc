@@ -2,270 +2,84 @@
 
 ![MY_VIMRC](/src/vim.png)
 
-#### DISCLAIMER:
+## Global Sets:
 
-**This tutorial works only on GNU/Linux.**
-
-## Vim Plug:
-
-Download & install vim-plug:
-
-```bash
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```vim
+syntax on            " Enable syntax highlight
+set nu               " Enable line numbers
+set tabstop=4        " Show existing tab with 4 spaces width
+set softtabstop=4    " Show existing tab with 4 spaces width
+set shiftwidth=4     " When indenting with '>', use 4 spaces width
+set expandtab        " On pressing tab, insert 4 spaces
+set smarttab         " insert tabs on the start of a line according to shiftwidth
+set smartindent      " Automatically inserts one extra level of indentation in some cases
+set hidden           " Hides the current buffer when a new file is openned
+set incsearch        " Incremental search
+set ignorecase       " Ingore case in search
+set smartcase        " Consider case if there is a upper case character
+set scrolloff=8      " Minimum number of lines to keep above and below the cursor
+set colorcolumn=100  " Draws a line at the given line to keep aware of the line size
+set updatetime=100   " Time in miliseconds to consider the changes
+set encoding=utf-8   " The encoding should be utf-8 to activate the font icons
+set nobackup         " No backup files
+set nowritebackup    " No backup files
+set splitright       " Create the vertical splits to the right
+set splitbelow       " Create the horizontal splits below
+set autoread         " Update vim after file update from outside
+set mouse=a          " Enable mouse support
+set cursorline       " Highlite cursorline
+set confirm          " Menu for exiting vim
+filetype on          " Detect and set the filetype option and trigger the FileType Event
+filetype plugin on   " Load the plugin file for the file type, if any
+filetype indent on   " Load the indent file for the file type, if any
 ```
 
-Create .vimrc file on your HOME directiory:
+## Remaps:
 
-```bash
-touch ~/.vimrc
+```vim
+" Navigate between splits
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Adding an empty line below, above and below with insert
+nmap op o<Esc>k
+nmap oi O<Esc>j
+nmap oo A<CR>
+
+" Create a tab
+nmap te :tabe<CR>
+
+" Navigate between buffers
+nmap ty :bn<CR>
+nmap tr :bp<CR>
+
+" Delete a buffer
+nmap td :bd<CR>
+
+" Create splits
+nmap th :split<CR>
+nmap tv :vsplit<CR>
+
+" Close splits and others
+nmap q :q<CR>
+nmap Q :q!<CR>
+nmap sa :w<CR>
+nmap se :wq<CR>
 ```
 
-Add this lines to your .vimrc:  
+## Autocmd:
 
 ```vim
-call plug#begin('~/.vim/plugged')
+" When the cursor is on a word highlight this word
+function! HighlightWordUnderCursor()
+    if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]'
+        exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/'
+    else
+        match none
+    endif
+endfunction
 
-" YOUR CONFIGS, PLUGINS, SETS, MAPS... HAS TO BE BETWEEN plug#begin and plug#end.
-
-call plug#end()
+autocmd! CursorHold,CursorHoldI * call HighlightWordUnderCursor()
 ```
-
-## Maps:
-
-**q** for quit in normal mode:
-
-```vim
-map q :q<CR>
-```
-
-**CTRL + q** force quit (quit without saving) in normal mode:
-
-```vim
-map <C-q> :q!<CR>
-```
-
-**CTRL + S** save changes in normal mode:
-
-```vim
-map <C-s> :w<CR>
-```
-
-That doesn't gonna work if you don't put this: `stty -ixon` on your `.bashrc` and restart your terminal.  
-
-**CTRL + S** save changes in insert mode:
-
-```vim
-imap <C-s> <Esc>:w<CR>
-```
-
-**CTRL + n** to show and hide nerdtree:
-
-```vim
-map <C-n> :NERDTreeToggle<CR>
-```
-
-Result:
-
-```vim
-call plug#begin('~/.vim/plugged')
-
-" Maps
-map q :q<CR>
-map <C-q> :q!<CR>
-map <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-call plug#end()
-```
-
-## Sets:
-
-Show line numbers:
-
-```vim
-set nu!
-```
-
-Autoindentation:  
-
-```vim
-set autoindent
-```
-
-Coloring the text while you're searching:  
-
-```vim
-set incsearch
-```  
-
-Wildmenu (a menu for autocomplete commands):  
-
-```vim
-set wildmenu
-```
-
-Laststatus (line in the bottom for showing the name of file):  
-
-```vim
-set laststatus=2
-```
-
-Confirm (menu of exiting vim):  
-
-```vim
-set confirm
-```
-
-Mouse (this option will allow you to use your mouse on vim):
-
-```vim
-set mouse=a
-```  
-
-Title (showing the name of file on application bar):
-
-```vim
-set title
-```  
-
-Highlite cursorline:
-
-```vim
-set cursorline
-```  
-
-Encoding utf-8:
-
-```vim
-set encoding=UTF-8
-```  
-
-Result:
-
-```vim
-call plug#begin('~/.vim/plugged')
-
-" Maps
-map q :q<CR>
-map <C-q> :q!<CR>
-map <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-" Sets
-set nu!
-set autoindent
-set incsearch
-set wildmenu
-set laststatus=2
-set confirm
-set mouse=a
-set title
-set cursorline
-set encoding=UTF-8
-
-call plug#end()
-```
-
-## Plugins:
-
-Vim airline:
-
-```vim
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-```
-
-Dracula theme:
-
-```vim
-Plug 'dracula/vim', { 'as': 'dracula' }
-```
-
-Syntax complete:
-
-```vim
-Plug 'ycm-core/YouCompleteMe'
-```
-
-Auto pairs ((),{}," "...):
-
-```vim
-Plug 'jiangmiao/auto-pairs'
-```
-
-Markdown preview:
-
-```vim
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
-```
-
-Files explorer:
-
-```vim
-Plug 'preservim/nerdtree'
-```
-
-Language(bash, vim, python, cpp...) icons:
-
-```vim
-Plug 'ryanoasis/vim-devicons'
-```
-
-Result:
-
-```vim
-call plug#begin('~/.vim/plugged')
-
-" Maps
-map q :q<CR>
-map <C-q> :q!<CR>
-map <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-" Sets
-set nu!
-set autoindent
-set incsearch
-set wildmenu
-set laststatus=2
-set confirm
-set mouse=a
-set title
-set cursorline
-set encoding=UTF-8
-
-" Plugins
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'ycm-core/YouCompleteMe'
-Plug 'jiangmiao/auto-pairs'
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
-Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-
-call plug#end()
-```
-
-## Plugins official documentation:  
-
-[Vim Plug](https://github.com/junegunn/vim-plug "Vim Plug GitHub")  
-
-[Vim Airline](https://github.com/vim-airline/vim-airline "Vim airline GitHub")  
-
-[Dracula theme](https://draculatheme.com/vim "Dracula theme website")  
-
-[YouCompleteMe](https://github.com/ycm-core/YouCompleteMe "YouCompleteMe GitHub")
-
-[Auto-pairs](https://github.com/jiangmiao/auto-pairs "Auto-pairs GitHub")
-
-[Vim instant markdown](https://github.com/instant-markdown/vim-instant-markdown "Vim instant markdown GitHub")
-
-[NerdTree](https://github.com/preservim/nerdtree "Nerd tree GitHub")
-
-[Vim DevIcons](https://github.com/ryanoasis/vim-devicons "Vim DevIcons GitHub")
-
